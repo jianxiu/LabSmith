@@ -1,0 +1,155 @@
+from django.utils import timezone
+from django.shortcuts import render,render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from .models import Device,Log
+from post_office import mail
+from django.core.mail import send_mail
+import os
+# Create your views here
+
+@login_required(login_url="/login/")
+def hello(req):
+    currentuser = req.user
+    msg=""
+    if 'id' in req.GET and 'action' in req.GET and req.GET['id']:
+        if req.GET['action']=='0':
+            msg = reserve_dev(int(req.GET['id']), currentuser)
+        elif req.GET['action']=='1':
+            msg = want_dev(int(req.GET['id']), currentuser)
+        elif req.GET['action']=='2':
+            msg = release_dev(int(req.GET['id']), currentuser)
+        else:
+            msg = "error"
+    devices1 = Device.objects.filter(name__startswith="OB").order_by("name")
+    devices2 = Device.objects.filter(name__startswith="BC").order_by("name") 
+    devices3 = Device.objects.filter(name__startswith="PDU").order_by("name")
+    devices4 = Device.objects.filter(name__startswith="IO").order_by("name")
+    devices5 = Device.objects.filter(name__startswith="BEARCAT").order_by("name")
+    deviceusers = User.objects.order_by("first_name")
+    context = {'devices1': devices1,
+               'devices2': devices2,
+               'devices3': devices3,
+               'devices4': devices4,
+               'devices5': devices5,
+               'currentuser' : currentuser,
+               'msg': msg,
+               'deviceusers':deviceusers,
+    }
+    #return render_to_response('hello.html',{'devices':devices})
+    return render(req, 'hello.html', context)
+
+@login_required(login_url="/login/")
+def result(req):
+    currentuser = req.user
+    if 'id' in req.GET and 'action' in req.GET and req.GET['id']:
+        if req.GET['action']=='0':
+            msg = reserve_dev(int(req.GET['id']), currentuser)
+        elif req.GET['action']=='1':
+            msg = want_dev(int(req.GET['id']), currentuser)
+        elif req.GET['action']=='2':
+            msg = release_dev(int(req.GET['id']), currentuser)
+        else:
+            msg = "error"
+        #msg="The button is %s and action is %s " % (req.GET['id'],req.GET['action'])
+
+        context={"msg":msg}
+        return render(req, "result.html", context)
+
+
+@login_required(login_url="/login/")
+def edit(req,id):
+    currentuser = req.user
+    device = Device.objects.get(id=id)
+    if req.method == 'POST':
+        device.info = req.POST['info']
+        device.save()
+
+        msg = 'change info to "%s" for' % device.info
+        log=Log(device=device,user=currentuser,timestamp=timezone.now(),msg=msg)
+        log.save()
+        return HttpResponseRedirect('/labsmith/#PDU')
+    # context = {'device':device,}
+    # return render(req,'edit.html',context)
+
+@login_required(login_url="/login/")
+def pxe(req,id):
+    currentuser = req.user
+    device = Device.objects.get(id=id)
+    errors=[]
+    if req.method == 'POST':
+        # if not req.POST.get('pxe_id', ''):
+            # errors.append('Enter pxe id.')
+        # if not errors:
+        cmdstr = "/root/PXE/pxetool_web1 %s %s %s %s %s %s %s %s"  % (device.name, req.POST['spa_ip'], req.POST['spb_ip'], req.POST['spa_mac'], req.POST['spb_mac'], currentuser.username, req.POST['platform_type'],req.POST['file_path'])
+        f = os.popen(cmdstr)
+        res = f.read()
+        return HttpResponse(res)
+    context = {'device':device,
+                   'errors':errors,}
+    return render(req, "pxe.html", context)
+
+
+
+
+
+def want_dev(id, currentuser):
+    device = Device.objects.get(id=id)
+    subject = "[Labsmith]%s want %s" % (currentuser.get_full_name(), device.name)
+    html_msg = r'%s want your %s<br>Please kindly release it if you are no longer using it and let him/her know!<br><br><a href="http://10.62.34.99:8010/labsmith/">http://10.62.34.99:8010/labsmith/</a>' % (currentuser.get_full_name(), device.name)
+    mailto = device.owner.email
+    mail.send(
+        [mailto],
+        'alarm@labsmith.com',
+        subject=subject,
+        html_message= html_msg,
+        # priority='now',
+    )
+    
+    # send_mail(subject, 'Here is the message.', 'alarm@labsmith.com',['Kun.Guo@emc.com'], fail_silently=False)
+    if device.wanted == None:
+        msg = "An e-mail has been sent to %s for %s." % (device.owner.get_full_name(), device.name)
+        device.wanted = currentuser
+    else:
+        msg = "The device is already wanted by %s." % (device.wanted.get_full_name())
+    device.save()
+    log=Log(device=device,user=currentuser,timestamp=timezone.now(),msg="want")
+    log.save()
+    return msg
+
+def reserve_dev(id, currentuser):
+    device = Device.objects.get(id=id)
+    device.owner = currentuser
+    device.save()
+    msg = "%s is owned by %s now." % (device.name, currentuser.get_full_name())
+    log=Log(device=device,user=currentuser,timestamp=timezone.now(),msg="reserve")
+    log.save()
+    return msg
+
+def release_dev(id, currentuser):
+    device = Device.objects.get(id=id)
+    if device.owner != currentuser:
+        return "Your are not the owner of this device."
+    else:
+        device.owner = None 
+
+        subject = "[Labsmith]%s is released." % ( device.name)
+        html_msg = r'You can reserve it now.<br><br><a href="http://10.62.34.99:8010/labsmith/">http://10.62.34.99:8010/labsmith/</a>'
+        if device.wanted != None:
+            mailto = device.wanted.email
+            mail.send(
+                [mailto],
+                'alarm@labsmith.com',
+                subject=subject,
+                html_message= html_msg,
+                # priority='now',
+            )
+            device.wanted = None
+            
+        device.save();
+            
+        msg = "%s is free now." % (device.name)
+        log=Log(device=device,user=currentuser,timestamp=timezone.now(),msg="release")
+        log.save()
+        return msg

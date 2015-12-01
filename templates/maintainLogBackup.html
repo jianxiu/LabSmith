@@ -1,0 +1,512 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">   
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <title>log</title>  
+  </head>  
+  <body>
+
+      <!-- <input type="hidden" name="next" value="{{ next }}" /> -->
+    <!-- </form> -->
+
+    <div class="container">
+      <ul class="list-inline">
+        <a href="/labsmith/"><li><h1><u>Labsmith</u></h1></li></a>
+        <li style="margin-left:350px; top: 10px"><h3>Maintenance log: {{device.name}}</h3></li>
+      </ul>
+      <hr id="divider-line1"/>
+
+      <form method="post" action = "" class="form-signin"  >
+        {% csrf_token %} 
+        <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
+        <label class="sr-only">Enter use log</label>
+
+    
+      
+        <input type="Text" name="inputLog"  align="left:250px; width: 200px;" style="left:-200px; width:800px;"  class="form-control"  placeholder="Type something new..." required autofocus><br /> 
+
+        
+
+        <!-- <textarea type="Text"  name="inputLog" cols="15" rows="4"  align="left:250px width:200px" width="200%"  class="form-control" placeholder="Type something new..."  required autofocus> Type something new...
+          
+        </textarea><br />
+      -->
+        
+        <div>
+        <button class="btn btn-primary btn-small" type="submit" style="position:absolute;top: 215px; left:1250px; width: 5%; height: 40px;text-align:center;">Submit</button>
+        </div>
+        
+      </form>
+      
+      <hr id="divider-line1"/>
+
+      <div class="content">
+        <table class="table table-striped" >
+
+            <thead>
+                <tr>
+                  <th style="width:8%">Time</th>
+                  <th style="width:8%">Author</th>
+                  <th style="width:30%">Log</th>
+                </tr>
+            </thead>
+
+            <tbody>
+              
+                 
+                    
+                 
+                  {% for maintainLog in maintainLogOB2004%}
+                    {% ifequal maintainLog.MachineName device.name %}
+
+                      <tr> 
+                          {% if forloop.counter < 200%}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                  {% for maintainLog in maintainLogOB2005%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200%}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogOB2006%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200%}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2007%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2008%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2009%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2010%}
+                    {% ifequal maintainLog.MachineName device.name %}
+          
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2011%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogOB2012%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogOB2013 %}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                  {% for maintainLog in maintainLogOB2014%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr>
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                  {% for maintainLog in maintainLogBC1000%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogBC1009%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogPDU1%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogPDU2%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU3%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU4%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU5%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU6%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU7%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+                   {% for maintainLog in maintainLogPDU8%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogIO1%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogIO2%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogIO3%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogBE00%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                  
+
+                   {% for maintainLog in maintainLogBE01%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogBE02%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                   {% for maintainLog in maintainLogBE03%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE04%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE05%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE06%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                          {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE07%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE08%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE09%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                         {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE10%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+                    {% for maintainLog in maintainLogBE11%}
+                    {% ifequal maintainLog.MachineName device.name %}
+                      <tr> 
+                           {% if forloop.counter < 200 %}
+                          <td>{{maintainLog.timestamp}}</td>
+                          <td>{{maintainLog.user}}</td>
+                          <td>{{maintainLog.content}}</td>
+                           {% endif %}
+                      </tr>
+                     {% endifequal %}
+                   {% endfor %}
+
+            </tbody>
+
+
+        </table>
+        
+      </div>
+      <hr id="divider-line1"/>
+      <!--a href="/labsmith/password/reset"><font color="#1874CD"><td style="margin-left:200px" >forget your password?</td></font></a-->
+      
+
+    </div> <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+ </body>  
+</html> 
+
+

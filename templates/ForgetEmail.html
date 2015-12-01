@@ -1,0 +1,52 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">   
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <title>Forget Password</title>  
+  </head>  
+  <body>
+
+      <!-- <input type="hidden" name="next" value="{{ next }}" /> -->
+    <!-- </form> -->
+
+    <div class="container">
+      <ul class="list-inline">
+        <li><h1>Labsmith</h1></li>
+      </ul>
+      <hr id="divider-line1"/>
+      {% if errors %}
+      <div class="alert alert-warning" role="alert">{{errors}}</div>
+      {% endif %}
+      <form method="post" action=" "class="form-signin">
+        {% csrf_token %} 
+        
+          <label class="sr-only">User name</label>
+          <input type="Text" name="inputUserName" class="form-control" placeholder="User Name" required ><br />
+        
+          <label class="sr-only">Email Address</label>
+          <input type="Text" name="inputEmailAddress" class="form-control" placeholder="Email Address" required ><br />
+        <div>
+          <button class="btn btn-primary btn-block" type="submit">Reset password</button>
+        </div>
+      </form>
+
+
+    </div> <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+ </body>  
+</html> 
+
+

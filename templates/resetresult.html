@@ -1,0 +1,56 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">   
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <title>resetresult</title>  
+  </head>  
+  <body>
+  <div class="container">
+      <ul class="list-inline">
+        <li><a href="/labsmith/"><h1>Labsmith</h1></a></li>
+      </ul>
+      <hr id="divider-line1"/>
+     
+      
+        <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
+        <p>We’ve sent you an email containing a new password.</p>
+
+        <p>Please check your spam folder if the email doesn’t appear within a few minutes.</p>
+       <a href="/login"><input id="return-btn" class="btn btn-success" type="button" value="Return to login" ></a>
+         <!--  <input class="btn btn-primary btn-block" type="button" value="Forgot Password?" style="margin-top:5px"  onClick="location.href='/reset/'"/> -->
+        </div>
+
+      
+      <style>
+      li {list-style-type: none;}
+      </style>
+    </div> <!-- /container -->
+      <!-- <input type="hidden" name="next" value="{{ next }}" /> -->
+    <!-- </form> -->
+    <form method="post" action = "" class="form-signin" >
+	   
+      </form>
+
+      
+      <style>
+      li {list-style-type: none;}
+      </style>
+    </div> <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+ </body>  
+</html> 
+
+

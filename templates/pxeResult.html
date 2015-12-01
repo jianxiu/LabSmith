@@ -1,0 +1,96 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">   
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <title>pxe result</title>  
+
+   
+  </head>
+
+
+  <body>
+  <div id="ld" style="position:absolute; left:-1px; top:1px; width:100%; height:100%; background-color:#FFFFFF; z-index:1000;"> 
+    <div id="center" style="position:absolute;"> 
+      <table border="0"> 
+        <tr><td><span id="disp" style="position:absolute; left:500px; top:500px; width:500px; height:100px; text-align: center; font:bold; " ><h3>PXE is preparing, please wait for a while</h3></span></td></tr> 
+        <tr><td><img src="{% static 'pics/loading.gif' %}" style="position:absolute; left:650px; top:200px;"></td></tr> 
+      </table> 
+    </div> 
+  </div>
+
+
+
+
+  <div class="container">
+      <ul class="list-inline">
+        <li><h1>Labsmith</h1></li>
+        <li style="margin-left:200px"><h3> PXE Status</h3></li>
+
+      </ul>
+
+
+      
+      <hr id="divider-line1"/>
+     
+      <form>
+       <!-- <div class="alert alert-success" role="alert">
+        <p>{{msg}}</p>
+        </div> -->
+        <!-- <div class="alert alert-success" role="alert">
+      
+          <br />{{res}}<br />
+        
+        </div> -->
+        <div class="alert alert-success" role="alert">
+         {% for item in result%}
+          <p>{{item}}</p>
+         {% endfor%}
+        
+        </div>
+        <div style="margin:auto">
+        <a href="/labsmith"><input id="return-btn" class="btn btn-success" type="button" value="Return" ></a>
+        </div>
+
+      </form>
+      
+
+  </div> <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+  
+     
+
+      <script language="JavaScript"> 
+        function winload(){ 
+          setTimeout( 
+          function(){ 
+          // alert("111111"); 
+          ld.style.display="none"; 
+            f8=true; 
+            },5000); 
+
+        }
+        // function winload(){ 
+        //  ld.style.display="none"; 
+        //  f8=true;  
+        // }
+
+        window.onload = winload;
+
+
+      </script> 
+
+ </body>  
+</html> 

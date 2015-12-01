@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    {% load staticfiles %}
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+        <!-- Bootstrap -->
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/login.css' %}" rel="stylesheet">
+        <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+        <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+        <title>log</title>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+    </head>
+
+    <body>
+        <input id="tab-option-input" style="display: none;" value="{{tab}}"/>
+        <div class="container">
+
+            <ul class="list-inline">
+                <a href="/labsmith/"><li><h1><u>Labsmith</u></h1></li></a>
+                <li style="margin-left:350px; top: 10px"><h3>Maintenance log: {{device.name}}</h3></li>
+            </ul>
+
+            <hr id="divider-line1"/>
+
+            <form method="post" action = "" class="form-signin"  >
+                {% csrf_token %}
+                <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
+                <label class="sr-only">Enter use log</label>
+                <input type="Text" name="inputLog"  align="left:250px; width: 200px;" style="left:-200px; width:800px;"  class="form-control"  placeholder="Type something new..." required autofocus><br/>
+                <!-- <textarea type="Text"  name="inputLog" cols="15" rows="4"  align="left:250px width:200px" width="200%"  class="form-control" placeholder="Type something new..."  required autofocus> Type something new...
+                </textarea><br />
+            -->
+                <div>
+                    <button class="btn btn-primary btn-small" type="submit" style="position:absolute;top: 215px; left:1250px; width: 5%; height: 40px;text-align:center;">Submit</button>
+                </div>
+             </form>
+
+
+            <hr id="divider-line1"/>
+    
+
+            <ul class="nav nav-tabs" id="switchtable">
+
+                    <li role="presentation" id="LOG-tab-li"><a href="#LOG" id="OB-tab" role="tab" data-toggle="tab" target="_blank">Log</a></li>
+                    <li role="presentation" id="RESERVATION-tab-li"><a href="#RESERVATION" id="RESERVATION-tab" role="tab" data-toggle="tab">Reservation</a></li>
+                <!--li role="presentation"><a href="/labsmith/myOberon/" id="OB-tab" role="tab" data-toggle="tab">Oberon</a></li-->
+                
+            </ul>
+
+            <div class="tab-content">
+
+                <div id="LOG" class="tab-pane fade in">
+                    <table class="table table-hover" >
+                        <thead>
+                            <tr>
+                                <th style="width:30%">Time</th>
+                                <th style="width:30%">Author</th>
+                                <th style="width:30%">Log</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            
+                            {% ifequal currentuser.pk 1 %}
+                                
+                                <form method="post" action = "/labsmith/mainLog/delete/" class="form-signin"  >
+                                    {% csrf_token %}
+                                    {% for mlog in maintainlog %}
+                                        <tr scope="row">
+                                            {% if forloop.counter < 200%}
+                                                <td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="{{mlog.id}}" />
+                                                    {{mlog.timestamp}}</td>
+                                                <td>{{mlog.user}}</td>
+                                                <td>{{mlog.content}}</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    <button type="submit" class="btn btn-danger" style="float:right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                </form>
+
+                            {% else %}
+
+                                {% for mlog in maintainlog %}
+                                    <tr>
+                                        {% if forloop.counter < 200%}
+                                            <td>{{mlog.timestamp}}</td>
+                                            <td>{{mlog.user}}</td>
+                                            <td>{{mlog.content}}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+
+                            {% endifequal %}
+
+                        </tbody>
+                    </table>
+                </div>
+            
+
+                <div id="RESERVATION" class="tab-pane fade in">
+                    <table class="table table-hover" >
+                        <thead>
+                            <tr>
+                                <th style="width:25%">machine</th>
+                                <th style="width:25%">user</th>
+                                <th style="width:25%">begin</th>
+                                <th style="width:25%">end</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in usagelog%}
+                                <tr>
+                                    {% if forloop.counter < 200 %}
+                                        <td>{{log.machineName}}</td>
+                                        <td>{{log.user}}</td>
+                                        <td>{{log.reserveTimestamp}}</td>
+                                        <td>{{log.releaseTimestamp}}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        </div> <!-- /container -->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+        </script>
+         <script type="text/javascript">
+      $(document).ready(function(){
+        var tabOption = $('#tab-option-input').val();
+        if(tabOption == 'Log'){
+          $('#LOG-tab-li').addClass('active');
+          $('#LOG').addClass('active');
+        }else if(tabOption == 'Reservation'){
+          $('#RESERVATION-tab-li').addClass('active');
+          $('#RESERVATION').addClass('active');
+        }
+        $(".showspan").click(function(){
+          $(this).parent().children("span.hidespan").show();
+          $(this).parent().children("span.showspan1").hide();
+          $(this).hide();
+        })
+        $(".dropbtn").click(function(){
+          $(this).parent().parent().children("input.form-control").val($(this).parent().parent().parent().parent().children("span.showspan1").text());
+          $(this).parent().parent().parent().parent().children("span.showspan").show();
+          $(this).parent().parent().parent().parent().children("span.showspan1").show();
+          $(this).parent().parent().parent().hide();
+        })
+      });
+    </script>
+    </body>
+</html>

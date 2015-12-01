@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>edit information</title>
+  </head>
+  <body>
+    Edit info for {{device.name}}
+    <form action="" method="post">
+      {% csrf_token %}
+      <p><b>Name</b>: {{device.name}}</p>
+      <p><b>Info</b>:</p>
+      <textarea rows="20" colums="50" name="info">{{device.info}}</textarea>
+      </br>
+      <input type="submit" value="Submit">
+      <!-- <a href="{% url 'show' %}">Return</a> -->
+      <!-- <a href="{% url 'show' %}"><input type="button" value="Return"></a> -->
+    </form>
+
+  </body>
+</html>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">   
+ <title>login</title>  
+  </head>  
+  <body>
+
+      <!-- <input type="hidden" name="next" value="{{ next }}" /> -->
+    <!-- </form> -->
+
+    <div class="container">
+      <ul class="list-inline">
+        <li><h1>Labsmith</h1></li>
+        <li style="margin-left:200px"><h3>Please login</h3></li>
+      </ul>
+      <hr id="divider-line1"/>
+      {% if error %}
+      <div class="alert alert-warning" role="alert">{{error}}</div>
+      {% endif %}
+      <form method="post" action = "" class="form-signin">
+        {% csrf_token %} 
+        <!-- <h2 class="form-signin-heading">Please sign in</h2> -->
+        <label class="sr-only">Username</label>
+        <input type="Text" name="inputusername" class="form-control" placeholder="Username" required autofocus>
+        <label class="sr-only">Password</label>
+        <input type="password" name="inputpassword" class="form-control" placeholder="Password" required>
+        <input type="hidden" name="next" value="{{ next }}" />
+        <div>
+          <button class="btn btn-primary btn-block" type="submit">Login</button>
+          <input class="btn btn-primary btn-block" type="button" value="New?" style="margin-top:5px"  onClick="location.href='/register/'"/>
+        </div>
+      </form>
+
+    </div> <!-- /container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+ </body>  
+</html> 
+
+

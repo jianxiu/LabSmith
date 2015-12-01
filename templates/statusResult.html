@@ -1,0 +1,201 @@
+<!DOCTYPE html>  
+<html>
+  {% load staticfiles %}  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script> -->
+    <!-- <link href="{% static 'css/hello.css' %}" rel="stylesheet"> -->
+    <!-- <script src="{% static 'js/autocomplete.js' %}"></script> -->
+    <title>Status result</title> 
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+   
+  </head>
+
+
+  <body>
+    <input id="tab-option-input" style="display: none;" value="{{tab}}"/>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+       <!--  <div class="navbar-header">
+          <!-- <h3 class="navbar-text">Device Status</h3> -->
+          <!-- <h3><a href="/labsmith/statusResult/"><h4>Refresh array status</h4></a></h3> -->
+        <!-- </div> --> 
+        <a href="/labsmith/" style="float:left"><h3><u>Labsmith</h3></a>
+      </div>  
+    </nav>
+
+
+  <div class="container" style=" display:block">
+    {% csrf_token %}
+       <ul class="nav nav-tabs" id="switchtable">
+          
+          <li role="presentation" id="OB-tab-li"><a href="#OB" id="OB-tab" role="tab" data-toggle="tab" target="_blank">Oberon</a></li>
+          <!-- <li role="presentation" id="BEARCAT-tab-li"><a href="#BEARCAT" id="BEARCAT-tab" role="tab" data-toggle="tab">Bearcat</a></li> -->
+          <li role="presentation" id="BC-tab-li"><a href="#BC" id="BC-tab" role="tab" data-toggle="tab">Beachcomber</a></li>
+          <a href="/labsmith/statusResult/"><button type="button" class="btn-success" style="float:right" title="Refresh array status"><span class="glyphicon glyphicon-refresh"></span></button></a>
+        </ul>
+
+    <div class="tab-content">
+    <div id="OB" class="tab-pane fade in">
+      <table class="table table-hover navbar-text">
+        <thead>
+          <tr>
+            <th style="width:40%">Name</th>
+            <th style="width:40%">Ip</th>
+            <th style="width:40%">Status</th>
+            
+          </tr>
+        </thead> 
+        <tbody >
+              <tr><p><td>{{name_OB.0}}</td><td>{{Ip_OB.0}}</td><td>{{Status_OB.0}}</td></p></tr> 
+              <tr><td>{{name_OB.1}}</td><td>{{Ip_OB.1}}</td><td>{{Status_OB.1}}</td></tr> 
+              <tr><td>{{name_OB.2}}</td><td>{{Ip_OB.2}}</td><td>{{Status_OB.2}}</td></tr> 
+              <tr><td>{{name_OB.3}}</td><td>{{Ip_OB.3}}</td><td>{{Status_OB.3}}</td></tr> 
+              <tr><td>{{name_OB.4}}</td><td>{{Ip_OB.4}}</td><td>{{Status_OB.4}}</td></tr> 
+              <tr><td>{{name_OB.5}}</td><td>{{Ip_OB.5}}</td><td>{{Status_OB.5}}</td></tr> 
+              <tr><td>{{name_OB.6}}</td><td>{{Ip_OB.6}}</td><td>{{Status_OB.6}}</td></tr> 
+              <tr><td>{{name_OB.7}}</td><td>{{Ip_OB.7}}</td><td>{{Status_OB.7}}</td></tr> 
+              <tr><td>{{name_OB.8}}</td><td>{{Ip_OB.8}}</td><td>{{Status_OB.8}}</td></tr> 
+              <tr><td>{{name_OB.9}}</td><td>{{Ip_OB.9}}</td><td>{{Status_OB.9}}</td></tr> 
+              <tr><td>{{name_OB.10}}</td><td>{{Ip_OB.10}}</td><td>{{Status_OB.10}}</td></tr> 
+              <tr><td>{{name_OB.11}}</td><td>{{Ip_OB.11}}</td><td>{{Status_OB.11}}</td></tr> 
+              <tr><td>{{name_OB.12}}</td><td>{{Ip_OB.12}}</td><td>{{Status_OB.12}}</td></tr> 
+              <tr><td>{{name_OB.13}}</td><td>{{Ip_OB.13}}</td><td>{{Status_OB.13}}</td></tr> 
+              <tr><td>{{name_OB.14}}</td><td>{{Ip_OB.14}}</td><td>{{Status_OB.14}}</td></tr> 
+              <tr><td>{{name_OB.15}}</td><td>{{Ip_OB.15}}</td><td>{{Status_OB.15}}</td></tr> 
+              <tr><td>{{name_OB.16}}</td><td>{{Ip_OB.16}}</td><td>{{Status_OB.16}}</td></tr> 
+              <tr><td>{{name_OB.17}}</td><td>{{Ip_OB.17}}</td><td>{{Status_OB.17}}</td></tr> 
+              <tr><td>{{name_OB.18}}</td><td>{{Ip_OB.18}}</td><td>{{Status_OB.18}}</td></tr> 
+              <tr><td>{{name_OB.19}}</td><td>{{Ip_OB.19}}</td><td>{{Status_OB.19}}</td></tr> 
+              <tr><td>{{name_OB.20}}</td><td>{{Ip_OB.20}}</td><td>{{Status_OB.20}}</td></tr> 
+              <tr><td>{{name_OB.21}}</td><td>{{Ip_OB.21}}</td><td>{{Status_OB.21}}</td></tr> 
+              <tr><td>{{name_OB.22}}</td><td>{{Ip_OB.22}}</td><td>{{Status_OB.22}}</td></tr> 
+              <tr><td>{{name_OB.23}}</td><td>{{Ip_OB.23}}</td><td>{{Status_OB.23}}</td></tr> 
+        </tbody>
+      </table>
+    </div>
+
+<!--     <div id="BEARCAT" class="tab-pane fade in">
+      <table class="table table-hover navbar-text">
+        <thead>
+          <tr>
+            <th style="width:40%">Name</th>
+            <th style="width:40%">Ip</th>
+            <th style="width:40%">Status</th>
+          </tr>
+        </thead> 
+        <tbody>
+              <tr><td>{{name_Be.0}}</td><td>{{Ip_Be.0}}</td><td>{{Status_Be.0}}</td></tr> 
+              <tr><td>{{name_Be.1}}</td><td>{{Ip_Be.1}}</td><td>{{Status_Be.1}}</td></tr> 
+              <tr><td>{{name_Be.2}}</td><td>{{Ip_Be.2}}</td><td>{{Status_Be.2}}</td></tr> 
+              <tr><td>{{name_Be.3}}</td><td>{{Ip_Be.3}}</td><td>{{Status_Be.3}}</td></tr> 
+              <tr><td>{{name_Be.4}}</td><td>{{Ip_Be.4}}</td><td>{{Status_Be.4}}</td></tr> 
+              <tr><td>{{name_Be.5}}</td><td>{{Ip_Be.5}}</td><td>{{Status_Be.5}}</td></tr> 
+              <tr><td>{{name_Be.6}}</td><td>{{Ip_Be.6}}</td><td>{{Status_Be.6}}</td></tr> 
+              <tr><td>{{name_Be.7}}</td><td>{{Ip_Be.7}}</td><td>{{Status_Be.7}}</td></tr> 
+              <tr><td>{{name_Be.8}}</td><td>{{Ip_Be.8}}</td><td>{{Status_Be.8}}</td></tr> 
+              <tr><td>{{name_Be.9}}</td><td>{{Ip_Be.9}}</td><td>{{Status_Be.9}}</td></tr> 
+              <tr><td>{{name_Be.10}}</td><td>{{Ip_Be.10}}</td><td>{{Status_Be.10}}</td></tr> 
+              <tr><td>{{name_Be.11}}</td><td>{{Ip_Be.11}}</td><td>{{Status_Be.11}}</td></tr> 
+              <tr><td>{{name_Be.12}}</td><td>{{Ip_Be.12}}</td><td>{{Status_Be.12}}</td></tr> 
+              <tr><td>{{name_Be.13}}</td><td>{{Ip_Be.13}}</td><td>{{Status_Be.13}}</td></tr> 
+              <tr><td>{{name_Be.14}}</td><td>{{Ip_Be.14}}</td><td>{{Status_Be.14}}</td></tr> 
+              <tr><td>{{name_Be.15}}</td><td>{{Ip_Be.15}}</td><td>{{Status_Be.15}}</td></tr> 
+              <tr><td>{{name_Be.16}}</td><td>{{Ip_Be.16}}</td><td>{{Status_Be.16}}</td></tr> 
+              <tr><td>{{name_Be.17}}</td><td>{{Ip_Be.17}}</td><td>{{Status_Be.17}}</td></tr> 
+              <tr><td>{{name_Be.18}}</td><td>{{Ip_Be.18}}</td><td>{{Status_Be.18}}</td></tr> 
+              <tr><td>{{name_Be.19}}</td><td>{{Ip_Be.19}}</td><td>{{Status_Be.19}}</td></tr> 
+              <tr><td>{{name_Be.20}}</td><td>{{Ip_Be.20}}</td><td>{{Status_Be.20}}</td></tr> 
+              <tr><td>{{name_Be.21}}</td><td>{{Ip_Be.21}}</td><td>{{Status_Be.21}}</td></tr> 
+              <tr><td>{{name_Be.22}}</td><td>{{Ip_Be.22}}</td><td>{{Status_Be.22}}</td></tr> 
+              <tr><td>{{name_Be.23}}</td><td>{{Ip_Be.23}}</td><td>{{Status_Be.23}}</td></tr> 
+        </tbody>
+      </table>
+    </div> -->
+
+      <div id="BC" class="tab-pane fade in">
+      <table class="table table-hover navbar-text">
+        <thead>
+          <tr>
+            <th style="width:40%">Name</th>
+            <th style="width:40%">Ip</th>
+            <th style="width:40%">Status</th>
+          </tr>
+        </thead> 
+        <tbody>
+              <tr><td>{{name_BC.0}}</td><td>{{Ip_BC.0}}</td><td>{{Status_BC.0}}</td></tr> 
+              <tr><td>{{name_BC.1}}</td><td>{{Ip_BC.1}}</td><td>{{Status_BC.1}}</td></tr> 
+              <tr><td>{{name_BC.2}}</td><td>{{Ip_BC.2}}</td><td>{{Status_BC.2}}</td></tr> 
+              <tr><td>{{name_BC.3}}</td><td>{{Ip_BC.3}}</td><td>{{Status_BC.3}}</td></tr> 
+        </tbody>
+      </table>
+    </div>
+
+    </div>
+      
+    <div style="margin:auto">
+        <a href="/labsmith"><input id="return-btn" class="btn btn-success" type="button" value="Return" ></a>
+    </div>
+
+  </div> <!-- /container --> 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script> 
+
+  
+     
+
+      <script language="JavaScript"> 
+        function winload(){ 
+          setTimeout( 
+          function(){ 
+          // alert("111111"); 
+          ld.style.display="none"; 
+            f8=true; 
+            },5000); 
+
+        }
+        // function winload(){ 
+        //  ld.style.display="none"; 
+        //  f8=true;  
+        // }
+
+        window.onload = winload;
+
+
+      </script> 
+      <script type="text/javascript">
+      $(document).ready(function(){
+        var tabOption = $('#tab-option-input').val();
+        if(tabOption == 'Oberon'){
+          $('#OB-tab-li').addClass('active');
+          $('#OB').addClass('active');
+        }else if(tabOption == 'Beachcomber'){
+          $('#BC-tab-li').addClass('active');
+          $('#BC').addClass('active');
+        }
+        $(".showspan").click(function(){
+          $(this).parent().children("span.hidespan").show();
+          $(this).parent().children("span.showspan1").hide();
+          $(this).hide();
+        })
+        $(".dropbtn").click(function(){
+          $(this).parent().parent().children("input.form-control").val($(this).parent().parent().parent().parent().children("span.showspan1").text());
+          $(this).parent().parent().parent().parent().children("span.showspan").show();
+          $(this).parent().parent().parent().parent().children("span.showspan1").show();
+          $(this).parent().parent().parent().hide();
+        })
+      });
+    </script>
+ </body>  
+</html> 

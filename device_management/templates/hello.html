@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+  {% load staticfiles %}
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script> -->
+    <!-- <link href="{% static 'css/hello.css' %}" rel="stylesheet"> -->
+    <!-- <script src="{% static 'js/autocomplete.js' %}"></script> -->
+    <title>Labsmith</title> 
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    
+      
+  </head>
+  <body>
+    <input id="tab-option-input" style="display: none;" value="{{tab}}"/>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <h3 class="navbar-text">Welcome to Platform Team Labsmith</h3>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="#">Link</a></li> -->
+            
+            <li class="dropdown">
+            {% ifequal currentuser.get_full_name AnonymousUser %}
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Guest<span class="caret"></span></a>
+                 <ul class="dropdown-menu" role="menu">
+                    <li><a href="/login/">Log in</a></li>
+                    <li><a href="/admin/">Admin Panel</a></li>
+            
+                  </ul>
+            {% else %}
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{currentuser.get_full_name}}<span class="caret"></span></a>
+                 <ul class="dropdown-menu" role="menu">
+                    <!-- <li><a href="/login/">Log in</a></li> -->
+                    <li><a href="/admin/">Admin Panel</a></li>
+                    <li><a href="/labsmith/changePWD/">Change Password</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/logout/">Log out</a></li>
+                  </ul>    
+            {% endifequal %}
+              
+            </li>
+          </ul>
+        </div>
+      </div>  
+    </nav>
+	<div style="width:100%">
+	<div style="padding-left:10px;width:10%">		
+			<dl class="nav navbar-nav">
+				<!-- dt><a href="https://teamforge6.usd.lab.emc.com/sf/wiki/do/viewPage/projects.c4cb_lx/wiki/OberonInfoInLab" target="_blank" style="text-decoration: none"><button class="btn btn-default active btn-block" type="button">Lab Wiki</button></a></dt>
+				
+        <dt>
+        <a href="statusResult/" target="_blank" style="text-decoration: none"><button class="btn btn-default active btn-block"  type="button">Poll array status</button></a></dt> -->
+        <dd><img src="/static/pics/circle.png" ></dd><hr>
+		<dd style="line-height:0px"><a href="http://10.244.16.120" target="_blank">NPE Equipment</a></dd><hr>
+        <dd style="line-height:0px"><a href="https://teamforge6.usd.lab.emc.com/sf/wiki/do/viewPage/projects.c4cb_lx/wiki/OberonInfoInLab" target="_blank">Lab Wiki</a></dd><hr>
+        
+        <dd style="line-height:0px"><a href="statusResult/" target="_blank">Poll array status</a></dd><hr>
+       
+			</dl>
+     
+	</div> 
+	
+    <!-- <div class="container" style="display:block"> -->
+		<div class="container" style="float:left;width:85%">
+      <!-- <form action="/labsmith/" method="POST"> -->
+        {% csrf_token %}
+      <!-- {% if msg %} -->
+      <!-- <div class="alert alert-success" role="alert">{{error}}</div> -->
+      <!-- {% endif %} -->
+      <!-- <form method="post" action = "" class="form-signin"> -->
+		
+        <ul class="nav nav-tabs"  id="switchtable">
+          
+          <li role="presentation" id="OB-tab-li"><a href="#OB" id="OB-tab" role="tab" data-toggle="tab" target="_blank">Oberon</a></li>
+          <!-- <li role="presentation" id="BEARCAT-tab-li"><a href="#BEARCAT" id="BEARCAT-tab" role="tab" data-toggle="tab">Bearcat</a></li> -->
+          <li role="presentation" id="BC-tab-li"><a href="#BC" id="BC-tab" role="tab" data-toggle="tab">Beachcomber</a></li>
+          <li role="presentation" id="PDU-tab-li"><a href="#PDU" id="PDU-tab" role="tab" data-toggle="tab">PDU</a></li>
+          <!-- <li role="presentation" id="IOHOST-tab-li"><a href="#IOHOST" id="IOHOST-tab" role="tab" data-toggle="tab">IO Host</a></li> -->
+        </ul>
+        <div class="tab-content"   >
+        <div role="tabpanel" id="OB" class="tab-pane fade in"  >
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:15%">User</th>
+                <th style="width:40%">Info</th>
+                <th style="width:8%">Action</th>
+                <th style="width:5%">Log</th>   
+                <th style="width:15%">   </th>         
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices1 %}
+              <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td> <!--1-->
+                <td>{{device.owner.get_full_name}}</td> <!--2-->
+                
+                <td>   <!--3-->
+                  {% ifequal device.owner currentuser %}
+                  
+                    <span class="showspan1" style="width:20px;text-align:left;display:inline-block;">{{device.user}}</span>
+                    <span class = "hidespan" style="display:none">
+                      <form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" value="{{device.user}}" name="user"/>
+                        <span class="input-group-btn">
+                          </a><button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                          <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                        </form>
+                    </span>
+                    <span style="float:right" class="showspan">
+                      <button type="button" class="btn" style="position:fix;right: 10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>  
+                    </span>
+                  {% else %}
+                  {{device.user}}
+                  
+                  {% endifequal %}
+                </td>
+				
+                <td> <!--4-->
+                  <span class="showspan1" style="width:350px;text-align:left;display:inline-block;">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'edit' device.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true" ></span></button>
+                        <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+           
+                      </span>
+                    </form>
+                  </span>
+                  <span style="position:relative;float:right; " class="showspan">
+                    <!-- <img src="{%static 'pics/pencil.png'%}" class="img-responsive" style="position:fix;right:10px" height="27px" width="27px" > -->
+                    <button type="button" class="btn" style="position:fix;right:10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                  </span>
+            </td>
+			
+            <td> <!--5-->
+              
+              {% if device.owner  %}
+                {% ifequal device.owner currentuser %}
+                  <a href="result?id={{device.id}}&action=2&tab=Oberon" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a>
+                  <!--a href="result?id={{device.id}}&action=2" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a-->
+                {% else %}
+                  <a href="result?id={{device.id}}&action=1&tab=Oberon" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button">want</button></a>
+                {% endifequal %}
+              {% else %}
+                  <a href="result?id={{device.id}}&action=0&tab=Oberon" style="text-decoration: none"><button class="btn btn-success btn-block" type="button">reserve</button></a>
+                  <!-- <a href="result?id={{device.id}}&action=0&tab=Oberon" style="text-decoration: none"><button class="btn btn-success btn=block" type="button">reserv</button></a> -->
+              {% endif %}                            
+            </td>
+			
+            <td>  <!--6-->
+            <a href="{% url 'mainLog'  device.id %}">         
+            <button class="btn" type="button" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button></a>
+            </td>
+			
+            <!-- <td>  <!--7-->
+            <!-- <a href="{% url 'statusResult'  device.id %}"> 
+            <button class="btn" type="button" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a>
+            </td>  -->
+
+            {% ifequal device.owner currentuser %}
+            
+            <td>  <!--8-->
+              
+              <a href="{% url 'pxe' device.id %}">
+              <button class="btn btn-danger" type="button" >GO PXE</button></a>
+            </td>
+            
+            {% endifequal %}
+           
+
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        <div role="tabpanel" class="tab-pane fade in" id="BC" >
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:15%">User</th>
+                <th style="width:40%">Info</th>
+                <th style="width:8%">Action</th>
+                <th style="width:5%">Log</th>
+                <th style="width:15%">   </th>  
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices2 %}
+              <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td>
+                <td>{{device.owner.get_full_name}}</td>
+                <td>
+                  {% ifequal device.owner currentuser %}
+                  <!--select>
+                    {% for deviceuser in deviceusers %}
+                    {% ifequal device.user deviceuser %}
+                    <option value="{{deviceuser.username}}" selected="selected">{{deviceuser.get_full_name}}</option>
+                    {% else %}
+                    <option value="{{deviceuser.username}}">{{deviceuser.get_full_name}}</option>
+                    {% endifequal %}
+                    {% endfor %}
+                  </select-->
+                    <span class="showspan1">{{device.user}}</span>
+                    <span class = "hidespan" style="display:none">
+                      <form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" value="{{device.user}}" name="user"/>
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                          <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                        </form>
+                    </span>
+
+                    <span style="float:right" class="showspan">
+                      <button type="button" class="btn" style="position:fix;right: 10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>  
+                    </span>
+                  {% else %}
+                  {{device.user}}
+
+                  {% endifequal %}
+                </td>
+
+                <td>
+                  <span class="showspan1" style="width:350px;text-align:left;display:inline-block;">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'editBeachcomber' device.id %}" method="POST">
+                      {% csrf_token %}
+                  <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                    <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button> 
+                    <!-- <input class="btn btn-primary" type="submit" value="ok"/> -->
+                    <!-- <input class="btn dropbtn" type="button" value="cancel"/> -->
+ <!-- onClick="location.href='/labsmith/'"/> -->
+                  </span>
+                </form>
+              </span>
+
+              <span style="float:right" class="showspan">
+                <!-- <img src="{%static 'pics/pencil.png'%}" class="img-responsive" style="position:fix;right:10px" height="27px" width="27px" > -->
+                <button type="button" class="btn" style="position:fix;right:10px; top: 10px;"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                <!-- <button type="button" class="btn" style="position:fix;right:10px">edit</button> -->
+              </span>
+            </td>
+            <td>
+              {% if device.owner  %}
+                {% ifequal device.owner currentuser %}
+                  <a href="result?id={{device.id}}&action=2&tab=Beachcomber" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a>
+                {% else %}
+                  <a href="result?id={{device.id}}&action=1&tab=Beachcomber" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button">want</button></a>
+                {% endifequal %}
+              {% else %}
+                  <a href="result?id={{device.id}}&action=0&tab=Beachcomber" style="text-decoration: none"><button class="btn btn-success btn-block" type="button">reserve</button></a>
+              {% endif %}
+            </td>
+
+            
+
+            
+           
+            <td> 
+            <a href="{% url 'mainLog'  device.id %}">         
+            <button class="btn" type="button" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button></a>
+            </td>
+            <!-- <td> 
+            <a href="{% url 'statusResult'  device.id %}"> 
+            <button class="btn" type="button" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></a>
+            </td> -->
+
+
+            {% ifequal device.owner currentuser %}
+            
+            <td>
+              
+              <a href="{% url 'pxe' device.id %}">
+              <button class="btn btn-danger" type="button" >GO PXE</button></a>
+            </td>
+            
+            {% endifequal %}
+
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+        </div>
+        <div  role="tabpanel" class="tab-pane fade in" id="PDU">
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:15%">User</th>
+                <th style="width:40%">Info</th>
+                <th style="width:8%">Action</th>
+                <th style="width:5%">Log</th>
+                <th style="width:15%">   </th>  
+                <!-- <th style="width:10%">PXE</th> -->
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for device in devices3 %}    <!--PDU/IOHOST-->
+              <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td>  <!--1-->
+                <td>{{device.owner.get_full_name}}</td>   <!--2-->
+                <td> <!--3-->
+                  {% ifequal device.owner currentuser %}
+                  <!--form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                    {% csrf_token %}
+                    <!-- <select class="form-control"> -->
+                    <!-- {% for deviceuser in deviceusers %} -->
+                    <!-- {% ifequal device.user deviceuser %} -->
+                    <!-- <option value="{{deviceuser.username}}" selected="selected">{{deviceuser.get_full_name}}</option> -->
+                    <!-- {% else %} -->
+                    <!-- <option value="{{deviceuser.username}}">{{deviceuser.get_full_name}}</option> -->
+                    <!-- {% endifequal %} -->
+                    <!-- {% endfor %} -->
+                  <!-- </select> -->
+                  <!-- <span class="input-group-btn"> -->
+                    <!-- <button type="button" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> -->
+                  <!-- </span> -->
+                  <!--input class="form-control" type="text" value="{{device.user}}" name="user"/>
+                  <span class="input-group-btn">                  
+                    <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                  </span>
+                  </form-->
+           
+                  <span class="showspan1">{{device.user}}</span>
+                    <span class = "hidespan" style="display:none">
+                      <form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" value="{{device.user}}" name="user"/>
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                          <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                        </form>
+                    </span>
+                    <span style="float:right" class="showspan">
+                      <button type="button" class="btn" style="position:fix;right: 10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>  
+                    </span>
+                  {% else %}
+                  {{device.user}}
+                  {% endifequal %}
+                </td>
+
+                <td> <!--4-->
+                  <span class="showspan1" style="width:350px;text-align:left;display:inline-block;">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'editPDU' device.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <!-- <input class="btn btn-primary" type="submit" value="ok"/> -->
+                        <!-- <input class="btn dropbtn" type="button" value="cancel" /> -->
+                        <!-- onClick="location.href='/labsmith/'"/> -->
+                      </span>
+                    </form>
+                  </span>
+                  <span style="float:right" class="showspan">
+                    <!-- <img src="{%static 'pics/pencil.png'%}" class="img-responsive" style="position:fix;right:10px" height="27px" width="27px" > -->
+                    <button type="button" class="btn" style="position:fix;right:10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                    <!-- <button type="button" class="btn" style="position:fix;right:10px">edit</button> -->
+                  </span>
+                </td>
+            <td> <!--5-->
+             <!--  {{device.owner}}{{currentuser}} -->
+              {% if device.owner  %}
+                {% ifequal device.owner currentuser %}
+                  <a href="result?id={{device.id}}&action=2&tab=PDU" style="text-decoration: none">
+                  <button class="btn btn-primary btn-block" type="button">release</button></a>
+                  
+
+                {% else %}
+                  <a href="result?id={{device.id}}&action=1&tab=PDU" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button">want</button></a>
+                {% endifequal %}
+              {% else %}
+                  <a href="result?id={{device.id}}&action=0&tab=PDU" style="text-decoration: none"><button class="btn btn-success btn-block" type="button">reserve</button></a>
+              {% endif %}
+            </td>
+            <!-- <td> -->
+              <!-- <a href="{% url 'pxe' device.id %}"><button class="btn" type="button">GO!</button></a> -->
+              <td>  <!--6-->
+              <a href="{% url 'mainLog'  device.id %}">         
+              <button class="btn" type="button" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button></a>
+            </td>
+          </tr>
+            
+          {% endfor %}
+		  <!-- {% for device in devices4 %}    <!--IO-HOST --> 
+              <!-- <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td>
+                <td>{{device.owner.get_full_name}}</td>
+                <td>
+                  {% ifequal device.owner currentuser %} -->
+                  <!--select>
+                    {% for deviceuser in deviceusers %}
+                    {% ifequal device.user deviceuser %}
+                    <option value="{{deviceuser.username}}" selected="selected">{{deviceuser.get_full_name}}</option>
+                    {% else %}
+                    <option value="{{deviceuser.username}}">{{deviceuser.get_full_name}}</option>
+                    {% endifequal %}
+                    {% endfor %}
+                  </select-->
+                  
+                 <!--  <span class="showspan1">{{device.user}}</span>
+                    <span class = "hidespan" style="display:none">
+                      <form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" value="{{device.user}}" name="user"/>
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                          <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                        </form>
+                    </span>
+                    <span style="float:right" class="showspan">
+                      <button type="button" class="btn" style="position:fix;right: 10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>  
+                    </span>
+                  {% else %}
+                  {{device.user}}
+                  {% endifequal %}
+                </td>
+
+                <td>
+                  <span class="showspan1" style="width:350px;text-align:left;display:inline-block;">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'editIOHOST' device.id %}" method="POST">
+                      {% csrf_token %}
+                  <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button> -->
+                    <!-- <input class="btn btn-primary" type="submit" value="ok"/> -->
+                    <!-- <input class="btn dropbtn" type="button" value="cancel" /> -->
+<!-- onClick="location.href='/labsmith/'"/> -->
+                 <!--  </span>
+                </form>
+              </span>
+              <span style="float:right" class="showspan"> -->
+                <!-- <img src="{%static 'pics/pencil.png'%}" class="img-responsive" style="position:fix;right:10px" height="27px" width="27px" > -->
+               <!--  <button type="button" class="btn" style="position:fix;right:10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button> -->
+            <!-- <!--     <!-- <button type="button" class="btn" style="position:fix;right:10px">edit</button> -->
+              <!-- </span>
+            </td>
+            <td>
+              {{devie.owner}}{{currentuser}}
+              {% if device.owner  %}
+
+                {% ifequal device.owner currentuser %}
+                  <a href="result?id={{device.id}}&action=2&tab=Rack1" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a> --> 
+                    <!--a href="/labsmith/" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a-->
+                  
+               <!--  {% else %}
+                  <a href="result?id={{device.id}}&action=1&tab=Rack1" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button">want</button></a>
+                {% endifequal %}
+              {% else %}
+                  <a href="result?id={{device.id}}&action=0&tab=Rack1" style="text-decoration: none"><button class="btn btn-success btn-block" type="button">reserve</button></a>
+              {% endif %}
+            </td> -->
+            <!-- <td> -->
+              <!-- <a href="{% url 'pxe' device.id %}"><button class="btn" type="button">GO!</button></a> -->
+              <!-- <td> 
+                <a href="{% url 'mainLog'  device.id %}">         
+                <button class="btn" type="button" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button></a>
+              </td>
+          </tr>
+          
+          {% endfor %} -->
+          </tbody>
+        </table>
+
+        </div>
+       <!--  <div  role="tabpanel" class="tab-pane fade in" id="IOHOST">
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:13%">User</th>
+                <th style="width:49%">Info</th>
+                <th style="width:9%">Action</th>
+                <th style="width:5%">Log</th>
+                <!-- <th style="width:10%">PXE</th> -->
+           <!--    </tr>
+            </thead>
+            <tbody>
+              
+
+          </tbody>
+        </table>
+
+        </div> -->
+<!--         <div  role="tabpanel" class="tab-pane fade in" id="BEARCAT">
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:15%">User</th>
+                <th style="width:40%">Info</th>
+                <th style="width:8%">Action</th>
+                <th style="width:5%">Log</th>
+                <th style="width:15%">   </th>  
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices5 %}
+              <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td>
+                <td>{{device.owner.get_full_name}}</td>
+                <td>
+                  {% ifequal device.owner currentuser %}
+                 
+                  <span class="showspan1">{{device.user}}</span>
+                    <span class = "hidespan" style="display:none">
+                      <form class="input-group" action="{% url 'changeuser' device.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" value="{{device.user}}" name="user"/>
+                        <span class="input-group-btn">
+                          <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                          <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        </span>
+                        </form>
+                    </span>
+                    <span style="float:right" class="showspan">
+                      <button type="button" class="btn" style="position:fix;right: 10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>  
+                    </span>
+                  {% else %}
+                  {{device.user}}
+                  {% endifequal %}
+                </td>
+
+                <td>
+                  <span class="showspan1" style="width:350px;text-align:left;display:inline-block;">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'editBearcat' device.id %}" method="POST">
+                      {% csrf_token %}
+                  <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                    <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                     
+                   
+                  </span>
+                </form>
+              </span>
+              <span style="float:right" class="showspan">
+               
+                <button type="button" class="btn" style="position:fix;right:10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+              
+              </span>
+            </td>
+            <td>
+              {% if device.owner  %}
+                {% ifequal device.owner currentuser %}
+                  <a href="result?id={{device.id}}&action=2&tab=Bearcat" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a>
+                {% else %}
+                  <a href="result?id={{device.id}}&action=1&tab=Bearcat" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button"> want </button></a>
+                {% endifequal %}
+              {% else %}
+                  <a href="result?id={{device.id}}&action=0&tab=Bearcat" style="text-decoration: none"><button class="btn btn-success btn-block" type="button">reserve</button></a>
+              {% endif %}
+            </td>
+             <td> 
+                <a href="{% url 'mainLog'  device.id %}">         
+                <button class="btn" type="button" ><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button></a>
+              </td>
+           
+
+
+            {% ifequal device.owner currentuser %}
+
+
+            <td>
+              
+              <a href="{% url 'pxe' device.id %}">
+              <button class="btn btn-danger" type="button" >GO PXE</button></a>
+            </td>
+            {% endifequal %}
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+        </div> -->
+
+
+
+        </div>
+      <!-- </form> -->
+	</div>
+ 
+</div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var tabOption = $('#tab-option-input').val();
+        if(tabOption == 'PDU'){
+          $('#PDU-tab-li').addClass('active');
+          $('#PDU').addClass('active');
+        }else if(tabOption == 'Oberon'){
+          $('#OB-tab-li').addClass('active');
+          $('#OB').addClass('active');
+        }else if(tabOption == 'Beachcomber'){
+          $('#BC-tab-li').addClass('active');
+          $('#BC').addClass('active');
+        }
+        $(".showspan").click(function(){
+          $(this).parent().children("span.hidespan").show();
+          $(this).parent().children("span.showspan1").hide();
+          $(this).hide();
+        })
+        $(".dropbtn").click(function(){
+          $(this).parent().parent().children("input.form-control").val($(this).parent().parent().parent().parent().children("span.showspan1").text());
+          $(this).parent().parent().parent().parent().children("span.showspan").show();
+          $(this).parent().parent().parent().parent().children("span.showspan1").show();
+          $(this).parent().parent().parent().hide();
+        })
+      });
+    </script>
+
+  </body>
+</html>
+

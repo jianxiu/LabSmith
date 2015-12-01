@@ -1,0 +1,77 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+
+def mylogin(req):
+    error = None
+    # if req.method == "GET":
+        # nexturl = req.GET['next']
+        # context={'next':nexturl,
+                 # 'errors':errors}
+        # return render(req,"login.html",context)
+    if req.method == "POST":
+        username = req.POST['inputusername']
+        password = req.POST['inputpassword']
+        nexturl1 = req.POST['next']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(req,user)
+            return HttpResponseRedirect(nexturl1)
+        else:
+            error = "Username or password is wrong"
+    
+    nexturl = req.GET['next']
+    context={'next':nexturl,
+             'error':error}
+    return render(req,"login.html",context)
+
+def mylogout(request):
+    logout(request)
+    return HttpResponseRedirect('/labsmith/')
+
+def redirect2labsmith(req):
+    return HttpResponseRedirect('/labsmith/')
+
+def register(req):
+    errors=[]
+    if req.method == "POST":
+        if not req.POST.get('username', ''):
+            errors.append("Enter username.")
+        if User.objects.filter(username__exact=req.POST['username']):
+            errors.append("Username used.")
+        if not req.POST.get('email', ''):
+            errors.append("Enter e-mail.")
+        if not req.POST.get('pwd1', ''):
+            errors.append("Enter password.")
+        if not req.POST.get('pwd2', ''):
+            errors.append("Enter confirm password.")
+        if not req.POST.get('first_name', ''):
+            errors.append("Enter first name.")
+        if not req.POST.get('last_name', ''):
+            errors.append("Enter last name.")
+        if not req.POST['pwd1'] == req.POST['pwd2']:
+            errors.append("password not equal")
+            
+        if not errors:
+            user = User.objects.create_user(
+                username = req.POST['username'], 
+                password = req.POST['pwd1'],
+                email = req.POST['email'],
+                first_name = req.POST['first_name'],
+                last_name = req.POST['last_name'],
+            )
+            # user = User()
+            # user.username = req.POST['username']
+            # user.set_password(req.POST['pwd1'])
+            # user.first_name = req.POST['first_name']
+            # user.last_name = req.POST['last_name']
+            # user.email = req.POST['email']
+            # user.is_staff = False
+            # user.is_superuser = False
+            user.is_active = True
+            user.save()
+            return HttpResponseRedirect("/labsmith/")
+        
+    context = {'errors':errors,}
+    return  render(req, "register.html", context)

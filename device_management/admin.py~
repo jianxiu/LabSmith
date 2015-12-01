@@ -1,0 +1,13 @@
+from django.contrib import admin
+from .models import Device, Log
+
+
+
+# Register your models here.
+
+class DeviceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'link', 'owner')
+
+
+admin.site.register(Device, DeviceAdmin)
+admin.site.register(Log)

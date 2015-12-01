@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  {% load staticfiles %}
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'pics/logo.png' %}" />
+    <link rel="Bookmark" href="{% static 'pics/logo.png' %}" />
+    <!-- <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script> -->
+    <!-- <link href="{% static 'css/hello.css' %}" rel="stylesheet"> -->
+    <!-- <script src="{% static 'js/autocomplete.js' %}"></script> -->
+    <title>Labsmith</title> 
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    
+      
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <h3 class="navbar-text">Welcome to Platform Team Labsmith</h3>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="#">Link</a></li> -->
+            <div class="navbar-header">
+                
+                <td><a href="https://teamforge6.usd.lab.emc.com/sf/wiki/do/viewPage/projects.c4cb_lx/wiki/OberonInfoInLab",style="text-decoration:underline"><h4 class="navbar-text"><u>Lab Wiki</u></h4></a></td>
+               
+            </div>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{currentuser.get_full_name}}<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/admin/">Admin Panel</a></li>
+                <li><a href="/labsmith/changePWD/">Change Password</a></li>
+                <li class="divider"></li>
+                <li><a href="/logout/">Log out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% csrf_token %}
+      <ul class="nav nav-tabs" id="switchtable">
+          <li role="presentation"><a href="#BEARCAT" id="BEARCAT-tab" role="tab" data-toggle="tab">Bearcat</a></li>
+          <li role="presentation" class="active"><a href="#OB" id="OB-tab" role="tab" data-toggle="tab">Oberon</a></li>
+          <li role="presentation"><a href="#BC" id="BC-tab" role="tab" data-toggle="tab">Beachcomber</a></li>
+          <li role="presentation"><a href="#PDU" id="PDU-tab" role="tab" data-toggle="tab">PDU</a></li>
+          <li role="presentation"><a href="#IOHOST" id="IOHOST-tab" role="tab" data-toggle="tab">IO Host</a></li>
+        </ul>
+
+        <div class="tab-content">
+        <div id="OB" class="tab-pane fade in">
+          <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Owner</th>
+                <th style="width:15%">User</th>
+                <th>Info</th>
+                <th style="width:8%">Action</th>
+                <th style="width:10%">PXE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices1 %}
+              <tr>
+                <td><a href="{{device.link}}" target="_blank">{{device.name}}</a></td>
+                <td>{{device.owner.get_full_name}}</td>
+                <td>
+                  {% ifequal device.owner currentuser %}
+                  <select>
+                    {% for deviceuser in deviceusers %}
+                    {% ifequal device.user deviceuser %}
+                    <option value="{{deviceuser.username}}" selected="selected">{{deviceuser.get_full_name}}</option>
+                    {% else %}
+                    <option value="{{deviceuser.username}}">{{deviceuser.get_full_name}}</option>
+                    {% endifequal %}
+                    {% endfor %}
+                  </select>
+                  {% else %}
+                  {{device.user.get_full_name}}
+                  {% endifequal %}
+                </td>
+                <td>
+                  <span class="showspan1">{{device.info}}</span>
+                  <span class="hidespan"  style="display:none">
+                    <form class="input-group"action="{% url 'edit' device.id %}" method="POST">
+                      {% csrf_token %}
+                      <input type="text" class="form-control" value="{{device.info}}" name="info"/>
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        <button type="button" class="btn dropbtn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <!-- <input class="btn btn-primary" type="submit" value="ok"/> -->
+                        <!-- <input class="btn  dropbtn" type="button" value="cancel" /> -->
+<!-- onClick="location.href='/labsmith/'"/> -->
+                      </span>
+                    </form>
+                  </span>
+                  <span style="float:right" class="showspan">
+                    <!-- <img src="{%static 'pics/pencil.png'%}" class="img-responsive" style="position:fix;right:10px" height="27px" width="27px" > -->
+                    <button type="button" class="btn" style="position:fix;right:10px"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                  </span>
+            </td>
+              <td>
+                {% if device.owner  %}
+                  {% ifequal device.owner currentuser %}
+                    <a href="result?id={{device.id}}&action=2" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a>
+                    <!--a href="result?id={{device.id}}&action=2" style="text-decoration: none"><button class="btn btn-primary btn-block" type="button">release</button></a-->
+                  {% else %}
+                    <a href="result?id={{device.id}}&action=1" style="text-decoration: none"><button class="btn btn-warning btn-block" type="button">want</button></a>
+                  {% endifequal %}
+                {% else %}
+                    <a href="result?id={{device.id}}&action=0" style="text-decoration: none"><button class="btn btn-success btn=block" type="button">reserve</button></a>
+                {% endif %}
+              </td>
+            <td>
+              <a href="{% url 'pxe' device.id %}"><button class="btn" type="button">GO!</button></a>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/twitter-bootstrap/twitter-bootstrap-v2/js/bootstrap-modal.js"></script>
+
+    
+    <script type="text/javascript">
+      $(document).ready(function(){
+      $(".showspan").click(function(){
+      $(this).parent().children("span.hidespan").show();
+      $(this).parent().children("span.showspan1").hide();
+      $(this).hide();
+      })
+      $(".dropbtn").click(function(){
+      $(this).parent().parent().children("input.form-control").val($(this).parent().parent().parent().parent().children("span.showspan1").text());
+      $(this).parent().parent().parent().parent().children("span.showspan").show();
+      $(this).parent().parent().parent().parent().children("span.showspan1").show();
+      $(this).parent().parent().parent().hide();
+      })
+      });
+    </script>
+
+  </body>
+</html>
+
